@@ -19,17 +19,8 @@
           <div class="col-md-12">
             <h1>Músicas de todos os gêneros</h1>
           </div>
-          <div class="col-md-3">
-            <h3>Pop</h3>
-          </div>
-          <div class="col-md-3">
-            <h3>Hip Hop</h3>
-          </div>
-          <div class="col-md-3">
-            <h3>Trap</h3>
-          </div>
-          <div class="col-md-3">
-            <h3>Rap</h3>
+          <div v-for="g in genero" :key="g" class="col-md-3">
+            <h3>{{ g }}</h3>
           </div>
         </div>
       </div>
@@ -40,21 +31,9 @@
           <div class="col-md-12">
             <h1>Curta ao som dos melhores artistas</h1>
           </div>
-          <div class="col-md-3">
-            <img class="img-fluid" src="../assets/imgs/bruno_mars.jpg" />
-            <h3>Bruno Mars</h3>
-          </div>
-          <div class="col-md-3">
-            <img class="img-fluid" src="../assets/imgs/calvin_harris.jpg" />
-            <h3>Calvin Harris</h3>
-          </div>
-          <div class="col-md-3">
-            <img class="img-fluid" src="../assets/imgs/rihanna.jpg" />
-            <h3>Rihanna</h3>
-          </div>
-          <div class="col-md-3">
-            <img class="img-fluid" src="../assets/imgs/shawn_mendes.jpg" />
-            <h3>Shawn Mendes</h3>
+          <div  v-for="artista in artistas" :key="artista.nome" class="col-md-3">
+            <h3>{{ artista.nome }}</h3>
+            <img class="img-fluid" :src="require(`../assets/imgs/${artista.imagem}.jpg`)" />
           </div>
         </div>
       </div>
@@ -71,7 +50,20 @@ import NavbarIndex from '@/components/NavbarIndex.vue'
     NavbarIndex
   },
 })
-export default class Index extends Vue { }
+export default class Index extends Vue {
+
+  genero = ['Hip Hop', 'Pop', 'Rock', 'Rap', 'Indie', 'Sertanejo', 'MPB', 'K-Pop']
+
+  artistas = [
+
+    { nome: 'Bruno Mars', imagem: 'bruno_mars' },
+    { nome: 'Calvin Harris', imagem: 'calvin_harris' },
+    { nome: 'Rihanna', imagem: 'rihanna' },
+    { nome: 'Shawn Mendes', imagem: 'shawn_mendes' }
+
+  ]
+
+}
 </script>
 
 <style lang="scss">

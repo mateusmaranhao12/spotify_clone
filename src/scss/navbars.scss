@@ -1,5 +1,7 @@
+@import 'variaveis';
+
 .navbar-index {
-    background-color: black;
+    background-color: $black;
     padding: 40px;
 
     img {
@@ -9,21 +11,21 @@
     }
 
     span {
-        color: #1ED760;
-        font-weight: bold;
+        color: $green;
+        font-weight: $bold;
         font-size: 40px;
     }
 
     .nav-link {
-        color: #FFF;
-        font-weight: bold;
-        position: relative;
+        color: $white;
+        font-weight: $bold;
+        position: $relative;
     }
 
     .nav-link:after {
-        display: block;
+        display: $block;
         content: '';
-        border-bottom: solid 3px #1ED760;
+        border-bottom: solid 3px $green;
         transform: scaleX(0);
         transition: transform 250ms ease-in-out;
     }
@@ -45,21 +47,21 @@
             padding: 20px;
             .nav-link {
                 &.active {
-                    color: #000;
-                    position: relative;
+                    color: $black;
+                    position: $relative;
                     cursor: default;
-                    background-color: #1ED760;
+                    background-color: $green;
                     border-radius: 10px;
-                    border-bottom: none;
+                    border-bottom: $none;
                 }
 
                 &.active:after {
                     content: '';
-                    position: absolute;
+                    position: $absolute;
                     bottom: -3px;
                     left: 0;
                     width: 100%;
-                    border-bottom: none;
+                    border-bottom: $none;
                 }
             }
         }
