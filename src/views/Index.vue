@@ -32,22 +32,24 @@
             <h1>Curta ao som dos melhores artistas</h1>
           </div>
           <div  v-for="artista in artistas" :key="artista.nome" class="col-md-3">
-            <h3>{{ artista.nome }}</h3>
             <img class="img-fluid" :src="require(`../assets/imgs/${artista.imagem}.jpg`)" />
+            <h3>{{ artista.nome }}</h3>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <Footer />
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
 import NavbarIndex from '@/components/NavbarIndex.vue'
+import Footer from '@/components/Footer.vue'
 
 @Options({
   components: {
-    NavbarIndex
+    NavbarIndex, Footer
   },
 })
 export default class Index extends Vue {

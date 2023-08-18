@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-index bg-index">
         <div class="container-fluid">
-            <router-link to="/" class="navbar-brand"><img src="../assets/imgs/logo.png" /> <span>Spotify</span></router-link>
+            <router-link to="/" class="navbar-brand"><img class="img-fluid" src="../assets/imgs/logo.png" /> <span>Spotify</span></router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

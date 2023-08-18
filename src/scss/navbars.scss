@@ -20,26 +20,27 @@
         color: $white;
         font-weight: $bold;
         position: $relative;
-    }
 
-    .nav-link:after {
-        display: $block;
-        content: '';
-        border-bottom: solid 3px $green;
-        transform: scaleX(0);
-        transition: transform 250ms ease-in-out;
-    }
+        &:after {
+            display: $block;
+            content: '';
+            border-bottom: solid 3px $green;
+            transform: scaleX(0);
+            transition: transform 250ms ease-in-out;
+        }
 
-    .nav-link:hover:after {
-        transform: scaleX(1);
-    }
+        &:hover:after {
+            transform: scaleX(1);
+        }
 
-    .nav-link.fromRight:after {
-        transform-origin: 100% 50%;
-    }
+        &.fromRight:after {
+            transform-origin: 100% 50%;
+        }
 
-    .nav-link.fromLeft:after {
-        transform-origin: 0% 50%;
+        &.fromLeft:after {
+            transform-origin: 0% 50%;
+        }
+
     }
 
     .navbar-nav {

@@ -1,0 +1,39 @@
+@import 'variaveis';
+
+.footer {
+    padding: 40px;
+    text-align: $center;
+
+    img {
+        height: 50px;
+        margin-bottom: 16px;
+        margin-right: 10px;
+    }
+
+    span {
+        color: $green;
+        font-weight: $bold;
+        font-size: 40px;
+    }
+
+    h4 {
+        font-weight: $bold;
+        text-transform: $uppercase;
+        color: rgb(170, 170, 170);
+        margin: 10px 0px 10px 0px;
+    }
+
+    a {
+        color: $white;
+        text-decoration: $none;
+
+        &:hover {
+            color: $green;
+        }
+    }
+
+    i {
+        margin: 0px 20px 10px 20px;
+        font-size: 40px;
+    }
+}
