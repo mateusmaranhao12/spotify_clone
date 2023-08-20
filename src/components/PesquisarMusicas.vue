@@ -16,6 +16,7 @@
           <tbody>
             <tr>
               <th scope="row">1</th>
+              <td><img class="img_musica img-fluid" src="../assets/imgs/m2.jpg"></td>
               <td>The Lazy Song</td>
               <td>Bruno Mars</td>
               <td>
@@ -26,6 +27,7 @@
             </tr>
             <tr>
               <th scope="row">2</th>
+              <td><img class="img_musica img-fluid" src="../assets/imgs/m12.jpg"></td>
               <td>There's Nothing Hold me Back</td>
               <td>Shawn Mendes</td>
               <td>
@@ -36,6 +38,7 @@
             </tr>
             <tr>
               <th scope="row">3</th>
+              <td><img class="img_musica img-fluid" src="../assets/imgs/m3.jpg"></td>
               <td>Miracle</td>
               <td>Calvin Harris, Ellie Goulding</td>
               <td>
@@ -47,6 +50,7 @@
 
             <tr>
               <th scope="row">4</th>
+              <td><img class="img_musica img-fluid" src="../assets/imgs/m4.jpg"></td>
               <td>This is What You Came For</td>
               <td>Calvin Harris, Rihanna</td>
               <td>
