@@ -15,6 +15,11 @@
                   <router-link :to="{name: 'Player'}" class="btn btn-success"><i class="fa-solid fa-play"></i></router-link>
                 </div>
               </td>
+              <td>
+                <div class="d-flex justify-content-center">
+                  <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </td>
             </tr>
             <tr>
               <th scope="row">2</th>
@@ -24,6 +29,27 @@
               <td>
                 <div class="d-flex justify-content-center">
                   <router-link :to="{name: 'Player'}" class="btn btn-success"><i class="fa-solid fa-play"></i></router-link>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex justify-content-center">
+                  <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td><img class="img_musica img-fluid" src="../assets/imgs/m4.jpg"></td>
+              <td>This is What You Came For</td>
+              <td>Calvin Harris, Rihanna</td>
+              <td>
+                <div class="d-flex justify-content-center">
+                  <router-link :to="{name: 'Player'}" class="btn btn-success"><i class="fa-solid fa-play"></i></router-link>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex justify-content-center">
+                  <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
                 </div>
               </td>
             </tr>

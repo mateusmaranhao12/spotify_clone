@@ -64,3 +64,33 @@
     }
 
 }
+
+.player {
+
+    text-align: $center;
+
+    h2 {
+        color: $white;
+    }
+
+    .card-title, .card-text, i {
+        color: $white
+    }
+
+    i {
+        cursor: pointer;
+
+        &:hover {
+            color: $green;
+        }
+    }
+
+    .progress {
+        border: 1px solid $white;
+        background-color: $black;
+    }
+
+    .progress-bar {
+        background-color: $green;
+    }
+}
