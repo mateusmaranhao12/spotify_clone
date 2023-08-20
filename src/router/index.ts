@@ -7,6 +7,7 @@ import Login from '@/components/Login.vue'
 import PaginaUsuario from '@/views/PaginaUsuario.vue'
 import PesquisarMusicas from '@/components/PesquisarMusicas.vue'
 import Playlist from '@/components/Playlist.vue'
+import Player from '@/components/Player.vue'
 
 const routes: Array<RouteRecordRaw> = [
 
@@ -46,6 +47,12 @@ const routes: Array<RouteRecordRaw> = [
         path: 'playlist',
         name: 'Playlist',
         component: Playlist
+      },
+
+      {
+        path: 'player',
+        name: 'Player',
+        component: Player
       }
 
     ]
