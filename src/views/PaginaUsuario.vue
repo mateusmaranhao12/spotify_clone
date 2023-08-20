@@ -1,6 +1,5 @@
 <template>
     <navbar-usuario></navbar-usuario>
-    <h1>Pagina Usuario</h1>
     <router-view></router-view>
 </template>
 

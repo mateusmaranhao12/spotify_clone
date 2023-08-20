@@ -1,0 +1,54 @@
+@import 'variaveis';
+
+.pesquisar_musicas {
+    padding: 40px;
+    background-color: $black;
+    border-radius: 20px;
+    border: 1px solid $white;
+
+    h2,
+    h6 {
+        color: $white;
+    }
+
+    h2 {
+        text-transform: $uppercase;
+        font-weight: $bold;
+    }
+
+    .form-control {
+        background-color: $black;
+    }
+
+    ::placeholder {
+        color: $white;
+    }
+
+    .white-text {
+        color: $white;
+    }
+}
+
+.musicas {
+    margin-top: 20px;
+    text-align: $center;
+
+    .table.custom-table {
+        background-color: rgb(22, 22, 22);
+    }
+
+    .table.custom-table th {
+        background-color: rgb(22, 22, 22);
+        color: $white;
+    }
+
+    .table.custom-table tbody tr {
+        background-color: rgb(22, 22, 22);
+    }
+
+    .table.custom-table tbody td {
+        background-color: rgb(22, 22, 22);
+        color: $white;
+    }
+
+}

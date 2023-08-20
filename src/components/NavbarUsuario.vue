@@ -1,8 +1,8 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-index bg-index">
         <div class="container-fluid">
-            <router-link to="/" class="navbar-brand"><img class="img-fluid" src="../assets/imgs/logo.png" /> 
-                <span>Spotify</span>
+            <router-link to="/pagina-usuario" class="navbar-brand">
+                <span style="font-size: 30px;"><i class="fa-solid fa-user"></i> Mateus</span>
             </router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
