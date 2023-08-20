@@ -1,0 +1,38 @@
+@import 'variaveis';
+
+.card {
+    background-color: $black;
+    padding: 4em;
+    border-radius: 20px;
+    border: 1px solid $white;
+
+    h3 {
+        color: $green;
+        font-weight: $bold;
+    }
+
+    label, small {
+        color: $white;
+    }
+
+    .text-success {
+        text-decoration: $none;
+        font-weight: $bold;
+
+        &:hover {
+            text-decoration: underline; /* Adicione sublinhado no hover */
+        }
+    }
+
+    .form-control {
+        background-color: $black;
+    }
+
+    ::placeholder {
+        color: $white;
+    }
+
+    .white-text {
+        color: $white;
+    }
+}
