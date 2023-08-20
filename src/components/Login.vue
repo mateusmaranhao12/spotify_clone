@@ -26,7 +26,7 @@
 
                 <div class="form-row mt-4 mb-4 text-center">
                   <div class="form-group col-md-12 d-flex justify-content-end">
-                    <button class="btn btn-success mt-3">Fazer login</button>
+                    <button class="btn btn-success mt-3" @click="fazerLogin()">Fazer login</button>
                   </div>
                 </div>
 
@@ -56,6 +56,10 @@ export default class Login extends Vue {
 
   mostrar_senha = false
   senha = ''
+
+  public fazerLogin() {
+    this.$router.push('/pagina-usuario')
+  }
 
   public alternarExibicaoSenha() {
     this.mostrar_senha = !this.mostrar_senha

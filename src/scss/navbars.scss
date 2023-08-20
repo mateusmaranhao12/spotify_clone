@@ -48,10 +48,9 @@
             padding: 20px;
             .nav-link {
                 &.active {
-                    color: $black;
+                    color: $green;
                     position: $relative;
                     cursor: default;
-                    background-color: $green;
                     border-radius: 10px;
                     border-bottom: $none;
                 }
