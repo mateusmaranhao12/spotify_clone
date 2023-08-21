@@ -1,5 +1,15 @@
 @import 'variaveis';
 
+.alert-danger {
+    background-color: rgb(37, 0, 0);
+    color: rgb(255, 169, 169);
+}
+
+.alert-success {
+    background-color: rgb(1, 37, 0);
+    color: rgb(172, 255, 169);
+}
+
 .card {
     background-color: $black;
     padding: 4em;
