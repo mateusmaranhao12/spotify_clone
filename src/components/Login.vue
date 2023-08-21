@@ -51,6 +51,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
 import NavbarIndex from '@/components/NavbarIndex.vue'
+import axios from 'axios'
 
 @Options({
   components: {
@@ -64,8 +65,36 @@ export default class Login extends Vue {
   senha = ''
   mensagem_erro_login = ''
 
-  public fazerLogin() {
-    this.$router.push('/pagina-usuario')
+  public fazerLogin() { //fazer login
+
+    const formData = new FormData()
+    formData.append('email', this.usuarios_cadastrados.email) //verificar o email
+    formData.append('senha', this.usuarios_cadastrados.senha) //verificar a senha
+
+    axios.post('http://localhost/projetos/spotify_clone/src/backend/login.php', formData)
+
+      .then(response => {
+
+        const data = response.data
+        if (data.status === 'sucesso') {
+          this.$router.push('/pagina-usuario') //se as credenciais forem corretas, ir para a proxima rota
+        } else if (data.status === 'erro') {
+
+          this.mensagem_erro_login = data.mensagem //se nao, exibir mensagem de erro
+
+          setTimeout(() => {
+            this.mensagem_erro_login = '' //exibir a mensagem de erro somente por 5 segundos
+          }, 5000);
+        }
+
+      })
+
+      .catch(error => {
+        console.error('Erro ao fazer login:', error)
+        this.mensagem_erro_login = 'Ocorreu um erro ao fazer login.'
+
+      })
+
   }
 
   public alternarExibicaoSenha() {
@@ -75,4 +104,6 @@ export default class Login extends Vue {
 }
 </script>
   
-<style lang="scss">@import '../scss/forms.scss';</style>
+<style lang="scss">
+@import '../scss/forms.scss';
+</style>
