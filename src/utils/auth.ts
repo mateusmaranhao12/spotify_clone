@@ -1,8 +1,8 @@
-import { reactive } from "vue"
+import { reactive } from 'vue'
 
 const state = reactive({
-    authToken: localStorage.getItem('authToken') || null, // Obter o token armazenado
-    usuarioAutenticado: false
+    usuarioAutenticado: !!localStorage.getItem('authToken'),
+    authToken: localStorage.getItem('authToken') || null,
 })
 
 export default state

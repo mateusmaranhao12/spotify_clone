@@ -78,9 +78,12 @@ export default class Login extends Vue {
 
         const data = response.data
         if (data.status === 'sucesso') {
+
           auth.usuarioAutenticado = true
-          localStorage.setItem('authToken', 'authToken')
-          this.$router.push('/pagina-usuario') //se as credenciais forem corretas, ir para a proxima rota
+          auth.authToken = 'authToken' // Defina o token
+          localStorage.setItem('authToken', auth.authToken) // Armazene o token
+          this.$router.push('/pagina-usuario') //se as credenciais forem corretas, redirecionar pra proxima rota
+
         } else if (data.status === 'erro') {
 
           this.mensagem_erro_login = data.mensagem //se nao, exibir mensagem de erro

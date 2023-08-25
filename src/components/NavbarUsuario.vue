@@ -22,9 +22,9 @@
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/" class="btn btn-logout">
+                        <button @click="fazerLogout()" class="btn btn-logout">
                             <i class="fa-solid fa-right-from-bracket"></i>
-                        </router-link>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -33,6 +33,7 @@
 </template>
   
 <script lang="ts">
+
 import { Options, Vue } from 'vue-class-component'
 
 @Options({
@@ -40,7 +41,16 @@ import { Options, Vue } from 'vue-class-component'
 
     },
 })
-export default class NavbarIndex extends Vue { }
+
+export default class NavbarIndex extends Vue { 
+
+    public fazerLogout() {
+        localStorage.removeItem('authToken')
+        this.$router.push('/')
+    }
+
+}
+
 </script>
 
 <style lang="scss">
