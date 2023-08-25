@@ -22,7 +22,7 @@
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/" class="nav-link">
+                        <router-link to="/" class="btn btn-logout">
                             <i class="fa-solid fa-right-from-bracket"></i>
                         </router-link>
                     </li>

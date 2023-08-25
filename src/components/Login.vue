@@ -84,7 +84,7 @@ export default class Login extends Vue {
 
           setTimeout(() => {
             this.mensagem_erro_login = '' //exibir a mensagem de erro somente por 5 segundos
-          }, 5000);
+          }, 5000)
         }
 
       })

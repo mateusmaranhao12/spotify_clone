@@ -67,3 +67,13 @@
         }
     }
 }
+
+.btn-logout {
+    color: $green;
+    border: 1px solid $green;
+
+    &:hover {
+        color: $black;
+        background-color: $green;
+    }
+}
