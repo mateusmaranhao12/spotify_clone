@@ -52,6 +52,7 @@
 import { Options, Vue } from 'vue-class-component'
 import NavbarIndex from '@/components/NavbarIndex.vue'
 import axios from 'axios'
+import auth from '@/utils/auth'
 
 @Options({
   components: {
@@ -77,6 +78,8 @@ export default class Login extends Vue {
 
         const data = response.data
         if (data.status === 'sucesso') {
+          auth.usuarioAutenticado = true
+          localStorage.setItem('authToken', 'authToken')
           this.$router.push('/pagina-usuario') //se as credenciais forem corretas, ir para a proxima rota
         } else if (data.status === 'erro') {
 
