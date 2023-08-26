@@ -54,11 +54,13 @@ import NavbarIndex from '@/components/NavbarIndex.vue'
 import axios from 'axios'
 import auth from '@/utils/auth'
 
+
 @Options({
   components: {
     NavbarIndex
-  },
+  }
 })
+
 export default class Login extends Vue {
 
   usuarios_cadastrados = { email: '', senha: '' }
@@ -66,47 +68,50 @@ export default class Login extends Vue {
   senha = ''
   mensagem_erro_login = ''
 
-  public fazerLogin() { //fazer login
+  public async fazerLogin() {
 
     const formData = new FormData()
-    formData.append('email', this.usuarios_cadastrados.email) //verificar o email
-    formData.append('senha', this.usuarios_cadastrados.senha) //verificar a senha
+    formData.append('email', this.usuarios_cadastrados.email)
+    formData.append('senha', this.usuarios_cadastrados.senha)
 
-    axios.post('http://localhost/projetos/spotify_clone/src/backend/login.php', formData)
+    try {
+      const response = await axios.post(
+        'http://localhost/projetos/spotify_clone/src/backend/login.php',
+        formData
+      )
 
-      .then(response => {
+      const data = response.data
+      console.log('Dados do servidor após login:', data)
 
-        const data = response.data
-        if (data.status === 'sucesso') {
+      if (data.status === 'sucesso') {
 
-          auth.usuarioAutenticado = true
-          auth.authToken = 'authToken' // Defina o token
-          localStorage.setItem('authToken', auth.authToken) // Armazene o token
-          this.$router.push('/pagina-usuario') //se as credenciais forem corretas, redirecionar pra proxima rota
+        auth.usuarioAutenticado = true
+        auth.usuarioNome = data.nome
+        localStorage.setItem('usuarioNome', data.nome)
+        localStorage.setItem('authToken', data.authToken)
 
-        } else if (data.status === 'erro') {
+        // Redirecionar para a rota após as atualizações
+        this.$router.push('/pagina-usuario')
 
-          this.mensagem_erro_login = data.mensagem //se nao, exibir mensagem de erro
+      } else if (data.status === 'erro') {
 
-          setTimeout(() => {
-            this.mensagem_erro_login = '' //exibir a mensagem de erro somente por 5 segundos
-          }, 5000)
-        }
+        this.mensagem_erro_login = data.mensagem
+        setTimeout(() => {
+          this.mensagem_erro_login = ''
+        }, 5000)
 
-      })
+      }
+    } catch (error) {
 
-      .catch(error => {
-        console.error('Erro ao fazer login:', error)
-        this.mensagem_erro_login = 'Ocorreu um erro ao fazer login.'
+      console.error('Erro ao fazer login:', error)
+      this.mensagem_erro_login = 'Ocorreu um erro ao fazer login.'
 
-      })
-
+    }
   }
 
   public alternarExibicaoSenha() {
     this.mostrar_senha = !this.mostrar_senha
   }
-
 }
 </script>
   

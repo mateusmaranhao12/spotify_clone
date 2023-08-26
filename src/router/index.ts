@@ -1,14 +1,12 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-
-//Configurações de proteção de rotas
 import { requerAutorizacao } from '@/utils/auth-guard'
 
-//rotas iniciais
+//rotas index
 import Cadastro from '@/components/Cadastro.vue'
 import Index from '@/views/Index.vue'
 import Login from '@/components/Login.vue'
 
-//rotas com acesso permitido somente se o usuário estiver autenticado
+//rotas protegidas
 import PaginaUsuario from '@/views/PaginaUsuario.vue'
 import PesquisarMusicas from '@/components/PesquisarMusicas.vue'
 import Playlist from '@/components/Playlist.vue'
@@ -34,15 +32,12 @@ const routes: Array<RouteRecordRaw> = [
     component: Login
   },
 
-
-
   {
     path: '/pagina-usuario',
     name: 'PaginaUsuario',
     component: PaginaUsuario,
-    redirect: '/pagina-usuario/pesquisar-musicas',
     beforeEnter: requerAutorizacao,
-
+    redirect: '/pagina-usuario/pesquisar-musicas',
     children: [
 
       {
@@ -56,16 +51,14 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Playlist',
         component: Playlist
       },
-
+      
       {
         path: 'player',
         name: 'Player',
         component: Player
       }
-
     ]
   }
-
 ]
 
 const router = createRouter({

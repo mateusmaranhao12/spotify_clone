@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col pesquisar_musicas text-center mt-3">
-        <h2>Olá, Mateus. Seja bem vindo(a)</h2>
+        <h2>Olá, {{ nomeUsuario }}. Seja bem vindo(a)</h2>
         <h6>Encontre e salve suas músicas favoritas aqui no Spotify!</h6>
         <div class="col-md-12 d-flex">
           <input type="text" class="white-text form-control me-2 mt-2" placeholder="Pesquisar música (Ex: The Lazy Song)">
@@ -68,13 +68,18 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
+import auth from '@/utils/auth'
 
 @Options({
   components: {
-    
+
   },
 })
 export default class PesquisarMusicas extends Vue {
+
+  get nomeUsuario() {
+    return localStorage.getItem('usuarioNome') || auth.usuarioNome || ''
+  }
 
 }
 </script>

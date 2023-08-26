@@ -15,9 +15,14 @@ if  ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $db_conn->query($sql);
 
     if ($result->num_rows > 0) {
-        // Usuário encontrado, retornar uma resposta de sucesso
-        $response = array('status' => 'sucesso', 'mensagem' => 'Login realizado com sucesso!');
+
+        // Usuário encontrado, retornar nome e uma resposta de sucesso
+        $row = $result->fetch_assoc();
+        $nomeUsuario = $row['nome'];
+        $response = array('status' => 'sucesso', 'nome' => $nomeUsuario, 'mensagem' => 'Login realizado com sucesso!');
+
     } else {
+        
         // Usuário não encontrado, retornar uma resposta de erro
         $response = array('status' => 'erro', 'mensagem' => 'E-mail ou senha incorretos.');
     }

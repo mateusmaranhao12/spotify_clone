@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12 musicas">
-        <h2 class="mt-3">Minha Playlist</h2>
+        <h2 class="mt-3">Playlist de {{ nomeUsuario }}</h2>
         <table class="table table-hover mt-5 mb-5 custom-table">
           <tbody>
             <tr>
@@ -62,6 +62,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
+import auth from '@/utils/auth'
 
 @Options({
   components: {
@@ -69,6 +70,10 @@ import { Options, Vue } from 'vue-class-component'
   },
 })
 export default class Playlist extends Vue {
+
+  get nomeUsuario() {
+    return localStorage.getItem('usuarioNome') || auth.usuarioNome || ''
+  }
 
 }
 </script>
