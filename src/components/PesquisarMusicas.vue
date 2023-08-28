@@ -7,9 +7,6 @@
         <div class="col-md-12 d-flex">
           <input v-model="pesquisar_musica" type="text" class="white-text form-control me-2 mt-2"
             placeholder="Pesquisar música (Ex: The Lazy Song)">
-          <button @click="pesquisarMusica()" class="btn btn-success mt-2" type="button"><i
-              class="fa-solid fa-magnifying-glass"></i>
-            Pesquisar</button>
         </div>
       </div>
 
@@ -52,6 +49,12 @@ import { Musicas } from '@/utils/interfaces'
 @Options({
   components: {
 
+  },
+
+  watch: {
+    pesquisar_musica(newVal) {
+      this.pesquisarMusica()
+    }
   },
 })
 
