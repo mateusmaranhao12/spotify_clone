@@ -5,13 +5,18 @@
         <h2>Olá, {{ nomeUsuario }}. Seja bem vindo(a)</h2>
         <h6>Encontre e salve suas músicas favoritas aqui no Spotify!</h6>
         <div class="col-md-12 d-flex">
-          <input type="text" class="white-text form-control me-2 mt-2" placeholder="Pesquisar música (Ex: The Lazy Song)">
-          <button class="btn btn-success mt-2" type="button"><i class="fa-solid fa-magnifying-glass"></i>
+          <input v-model="pesquisar_musica" type="text" class="white-text form-control me-2 mt-2"
+            placeholder="Pesquisar música (Ex: The Lazy Song)">
+          <button @click="pesquisarMusica()" class="btn btn-success mt-2" type="button"><i
+              class="fa-solid fa-magnifying-glass"></i>
             Pesquisar</button>
         </div>
       </div>
 
       <div class="col-md-12 musicas">
+        <div v-if="erro_pesquisar_musica" class="alert alert-danger" role="alert">
+          Nenhuma música encontrada
+        </div>
         <table class="table table-hover mt-5 mb-5 custom-table">
           <tbody>
             <tr v-for="musica in musicas" :key="musica.id">
@@ -52,22 +57,22 @@ import { Musicas } from '@/utils/interfaces'
 
   },
 })
+
 export default class PesquisarMusicas extends Vue {
 
   musicas: Musicas[] = []
   audioUrl = ''
+  pesquisar_musica = ''
+  erro_pesquisar_musica = false
 
   created() { //exibir musicas
     this.getMusicas()
+    this.audioElement = new Audio()
   }
 
   audioElement: HTMLAudioElement | null = null
 
-  mounted() {
-    this.audioElement = new Audio() //permitir demonstrar as musicas
-  }
-
-  public getMusicas() {
+  public getMusicas() { //visualizar musicas
 
     axios.get<Musicas[]>('http://localhost/Projetos/spotify_clone/src/backend/musicas.php')
       .then((res) => {
@@ -82,7 +87,8 @@ export default class PesquisarMusicas extends Vue {
 
   }
 
-  public demonstrarMusica(musica: Musicas) {
+  public demonstrarMusica(musica: Musicas) { //demonstrar musica
+
     this.musicas.forEach((m) => {
       if (m === musica) {
         m.demonstrando = !m.demonstrando
@@ -96,9 +102,41 @@ export default class PesquisarMusicas extends Vue {
         m.demonstrando = false
       }
     })
+
   }
 
-  get nomeUsuario() {
+  public pesquisarMusica() { //pesquisar musica
+
+    if (this.pesquisar_musica.trim() === '') {
+      this.getMusicas()
+      this.erro_pesquisar_musica = true
+      setTimeout(() => {
+        this.erro_pesquisar_musica = false
+      }, 3000)
+    } else {
+      const pesquisarMusicaLowerCase = this.pesquisar_musica.toLowerCase()
+
+      axios
+        .get<Musicas[]>(`http://localhost/Projetos/spotify_clone/src/backend/musicas.php?pesquisa=${this.pesquisar_musica}`)
+        .then((res) => {
+          this.musicas = res.data.map((musica) => ({
+            ...musica,
+            demonstrando: false,
+          }))
+
+          // Filtre a lista baseada na pesquisa
+          this.musicas = this.musicas.filter((musica) => {
+            return musica.musica.toLowerCase().includes(pesquisarMusicaLowerCase)
+          })
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+
+  }
+
+  get nomeUsuario() { //mostrar nome de usuario
     return localStorage.getItem('usuarioNome') || auth.usuarioNome || ''
   }
 
