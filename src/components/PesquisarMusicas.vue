@@ -24,6 +24,14 @@
                   <button class="btn btn-success"><i class="fa-solid fa-plus"></i></button>
                 </div>
               </td>
+              <td>
+                <div class="d-flex justify-content-center">
+                  <button class="btn btn-primary" @click="demonstrarMusica(musica)">
+                    <i
+                      :class="{ 'fa-solid fa-play': !musica.demonstrando, 'fa-solid fa-pause': musica.demonstrando }"></i>
+                  </button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -38,6 +46,7 @@ import auth from '@/utils/auth'
 import axios from 'axios'
 import { Musicas } from '@/utils/interfaces'
 
+
 @Options({
   components: {
 
@@ -46,21 +55,47 @@ import { Musicas } from '@/utils/interfaces'
 export default class PesquisarMusicas extends Vue {
 
   musicas: Musicas[] = []
+  audioUrl = ''
 
-  created() {
+  created() { //exibir musicas
     this.getMusicas()
+  }
+
+  audioElement: HTMLAudioElement | null = null
+
+  mounted() {
+    this.audioElement = new Audio() //permitir demonstrar as musicas
   }
 
   public getMusicas() {
 
     axios.get<Musicas[]>('http://localhost/Projetos/spotify_clone/src/backend/musicas.php')
       .then((res) => {
-        this.musicas = res.data
+        this.musicas = res.data.map((musica) => ({
+          ...musica,
+          demonstrando: false,
+        }))
       })
       .catch((err) => {
         console.error(err)
       })
 
+  }
+
+  public demonstrarMusica(musica: Musicas) {
+    this.musicas.forEach((m) => {
+      if (m === musica) {
+        m.demonstrando = !m.demonstrando
+        if (m.demonstrando) {
+          this.audioElement!.src = require(`../assets/music/${musica.som}.mp3`)
+          this.audioElement!.play()
+        } else {
+          this.audioElement!.pause()
+        }
+      } else {
+        m.demonstrando = false
+      }
+    })
   }
 
   get nomeUsuario() {

@@ -9,4 +9,5 @@ export interface Musicas {
     musica: string,
     compositor: string,
     som: string
+    demonstrando: boolean
 }
