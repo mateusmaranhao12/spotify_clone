@@ -14,9 +14,6 @@
       </div>
 
       <div class="col-md-12 musicas">
-        <div v-if="erro_pesquisar_musica" class="alert alert-danger" role="alert">
-          Nenhuma música encontrada
-        </div>
         <table class="table table-hover mt-5 mb-5 custom-table">
           <tbody>
             <tr v-for="musica in musicas" :key="musica.id">
@@ -63,7 +60,6 @@ export default class PesquisarMusicas extends Vue {
   musicas: Musicas[] = []
   audioUrl = ''
   pesquisar_musica = ''
-  erro_pesquisar_musica = false
 
   created() { //exibir musicas
     this.getMusicas()
@@ -109,10 +105,6 @@ export default class PesquisarMusicas extends Vue {
 
     if (this.pesquisar_musica.trim() === '') {
       this.getMusicas()
-      this.erro_pesquisar_musica = true
-      setTimeout(() => {
-        this.erro_pesquisar_musica = false
-      }, 3000)
     } else {
       const pesquisarMusicaLowerCase = this.pesquisar_musica.toLowerCase()
 
