@@ -14,45 +14,11 @@
       <div class="col-md-12 musicas">
         <table class="table table-hover mt-5 mb-5 custom-table">
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td><img class="img_musica img-fluid" src="../assets/imgs/m2.jpg"></td>
-              <td>The Lazy Song</td>
-              <td>Bruno Mars</td>
-              <td>
-                <div class="d-flex justify-content-center">
-                  <button class="btn btn-success"><i class="fa-solid fa-plus"></i></button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td><img class="img_musica img-fluid" src="../assets/imgs/m12.jpg"></td>
-              <td>There's Nothing Hold me Back</td>
-              <td>Shawn Mendes</td>
-              <td>
-                <div class="d-flex justify-content-center">
-                  <button class="btn btn-success"><i class="fa-solid fa-plus"></i></button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td><img class="img_musica img-fluid" src="../assets/imgs/m3.jpg"></td>
-              <td>Miracle</td>
-              <td>Calvin Harris, Ellie Goulding</td>
-              <td>
-                <div class="d-flex justify-content-center">
-                  <button class="btn btn-success"><i class="fa-solid fa-plus"></i></button>
-                </div>
-              </td>
-            </tr>
-
-            <tr>
-              <th scope="row">4</th>
-              <td><img class="img_musica img-fluid" src="../assets/imgs/m4.jpg"></td>
-              <td>This is What You Came For</td>
-              <td>Calvin Harris, Rihanna</td>
+            <tr v-for="musica in musicas" :key="musica.id">
+              <th scope="row">{{ musica.id }}</th>
+              <td><img class="img_musica img-fluid" :src="require(`../assets/imgs/${musica.imagem}.jpg`)"></td>
+              <td>{{ musica.musica }}</td>
+              <td>{{ musica.compositor }}</td>
               <td>
                 <div class="d-flex justify-content-center">
                   <button class="btn btn-success"><i class="fa-solid fa-plus"></i></button>
@@ -69,6 +35,8 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
 import auth from '@/utils/auth'
+import axios from 'axios'
+import { Musicas } from '@/utils/interfaces'
 
 @Options({
   components: {
@@ -76,6 +44,24 @@ import auth from '@/utils/auth'
   },
 })
 export default class PesquisarMusicas extends Vue {
+
+  musicas: Musicas[] = []
+
+  created() {
+    this.getMusicas()
+  }
+
+  public getMusicas() {
+
+    axios.get<Musicas[]>('http://localhost/Projetos/spotify_clone/src/backend/musicas.php')
+      .then((res) => {
+        this.musicas = res.data
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+
+  }
 
   get nomeUsuario() {
     return localStorage.getItem('usuarioNome') || auth.usuarioNome || ''
