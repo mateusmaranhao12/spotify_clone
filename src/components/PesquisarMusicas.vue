@@ -20,7 +20,8 @@
               <td>{{ musica.compositor }}</td>
               <td>
                 <div class="d-flex justify-content-center">
-                  <button class="btn btn-success"><i class="fa-solid fa-plus"></i></button>
+                  <button @click="adicionarMusicaPlaylist(musica.id)" class="btn btn-success"><i
+                      class="fa-solid fa-plus"></i></button>
                 </div>
               </td>
               <td>
@@ -129,6 +130,34 @@ export default class PesquisarMusicas extends Vue {
         })
     }
 
+  }
+
+  public adicionarMusicaPlaylist(musicaId: number) { //adicionar música à playlist
+
+    const usuarioId = localStorage.getItem('usuarioId')
+
+    if (!usuarioId) {
+      console.error('ID do usuário não encontrado em localStorage.')
+      return // Se o ID do usuário não estiver disponível, saia da função.
+    }
+
+    console.log('ID do usuário:', usuarioId)
+    console.log('ID da música:', musicaId)
+
+    // Faz uma solicitação HTTP POST para adicionar a música à playlist do usuário.
+    axios.post('http://localhost/Projetos/spotify_clone/src/backend/playlist_usuarios.php', {
+      usuario_id: usuarioId,
+      musica_id: musicaId,
+    })
+      .then((res) => {
+        // A música foi adicionada à playlist com sucesso.
+        if (res.data.status) {
+          console.log('Música adicionada à playlist com sucesso!')
+        }
+      })
+      .catch((err) => {
+        console.error('Erro ao adicionar música à playlist:', err)
+      })
   }
 
   get nomeUsuario() { //mostrar nome de usuario

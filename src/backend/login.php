@@ -19,7 +19,8 @@ if  ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Usuário encontrado, retornar nome e uma resposta de sucesso
         $row = $result->fetch_assoc();
         $nomeUsuario = $row['nome'];
-        $response = array('status' => 'sucesso', 'nome' => $nomeUsuario, 'mensagem' => 'Login realizado com sucesso!');
+        $idUsuario = $row['id'];
+        $response = array('status' => 'sucesso', 'id' => $idUsuario , 'nome' => $nomeUsuario, 'mensagem' => 'Login realizado com sucesso!');
 
     } else {
         

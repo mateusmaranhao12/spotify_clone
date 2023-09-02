@@ -10,7 +10,7 @@
           </div>
           <div class="container">
             <div class="row">
-              <form>
+              <form @submit.prevent="fazerLogin">
                 <div class="form-group">
                   <label for="email">E-mail <span class="text-danger">*</span> </label>
                   <input v-model="usuarios_cadastrados.email" type="text" ref="email" placeholder="e-mail" id="email"
@@ -85,9 +85,11 @@ export default class Login extends Vue {
 
       if (data.status === 'sucesso') {
 
+        console.log('ID do usuário:', data.id)
         auth.usuarioAutenticado = true
         auth.usuarioNome = data.nome
         localStorage.setItem('usuarioNome', data.nome)
+        localStorage.setItem('usuarioId', data.id)
         localStorage.setItem('authToken', data.authToken)
 
         // Redirecionar para a rota após as atualizações
