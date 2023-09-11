@@ -4,7 +4,7 @@ include "access_control.php";
 
 include "connection.php";
 
-if  ($_SERVER['REQUEST_METHOD'] === 'POST') { 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
 
     // Receber dados do formulário de login
     $email = $_POST['email'];
@@ -32,3 +32,7 @@ if  ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode($response);
 
 }
+
+$db_conn->close();
+
+?>

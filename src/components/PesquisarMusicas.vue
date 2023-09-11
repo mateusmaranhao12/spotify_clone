@@ -10,6 +10,10 @@
         </div>
       </div>
 
+      <div v-if="mensagem_alerta" class="mt-3 mb-3 text-center" :class="mensagem_alerta.status">
+        {{ mensagem_alerta.mensagem }}
+      </div>
+
       <div class="col-md-12 musicas">
         <table class="table table-hover mt-5 mb-5 custom-table">
           <tbody>
@@ -45,6 +49,7 @@ import { Options, Vue } from 'vue-class-component'
 import auth from '@/utils/auth'
 import axios from 'axios'
 import { Musicas } from '@/utils/interfaces'
+import { MensagemAlerta } from '@/utils/interfaces'
 
 
 @Options({
@@ -60,6 +65,8 @@ import { Musicas } from '@/utils/interfaces'
 })
 
 export default class PesquisarMusicas extends Vue {
+
+  mensagem_alerta: MensagemAlerta | null = null
 
   musicas: Musicas[] = []
   audioUrl = ''
@@ -132,32 +139,55 @@ export default class PesquisarMusicas extends Vue {
 
   }
 
-  public adicionarMusicaPlaylist(musicaId: number) { //adicionar música à playlist
+  public adicionarMusicaPlaylist(musica_id: number) {
+    const usuario_id = localStorage.getItem('usuarioId')
 
-    const usuarioId = localStorage.getItem('usuarioId')
-
-    if (!usuarioId) {
+    if (!usuario_id) {
       console.error('ID do usuário não encontrado em localStorage.')
-      return // Se o ID do usuário não estiver disponível, saia da função.
+      return
     }
 
-    console.log('ID do usuário:', usuarioId)
-    console.log('ID da música:', musicaId)
+    console.log('usuario_id:', usuario_id)
+    console.log('musica_id:', musica_id)
 
-    // Faz uma solicitação HTTP POST para adicionar a música à playlist do usuário.
-    axios.post('http://localhost/Projetos/spotify_clone/src/backend/playlist_usuarios.php', {
-      usuario_id: usuarioId,
-      musica_id: musicaId,
-    })
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+
+    axios.post('http://localhost/Projetos/spotify_clone/src/backend/musicas_playlist.php', {
+      usuario_id: usuario_id,
+      musica_id: musica_id,
+    }, config)
       .then((res) => {
-        // A música foi adicionada à playlist com sucesso.
+        console.log('Resposta do servidor:', res)
         if (res.data.status) {
-          console.log('Música adicionada à playlist com sucesso!')
+          // A música foi adicionada com sucesso
+
+          this.mensagem_alerta = {
+            status: 'alert alert-success',
+            mensagem: 'Música adicionada à playlist com sucesso!'
+          }
+
+        } else {
+          if (res.data.mensagem) {
+            console.error('Erro ao adicionar música à playlist:', res.data.mensagem)
+          } else {
+            console.error('Erro desconhecido ao adicionar música à playlist')
+          }
         }
       })
       .catch((err) => {
-        console.error('Erro ao adicionar música à playlist:', err)
+        console.error('Erro na solicitação:', err)
       })
+
+    setTimeout(() => {
+      this.mensagem_alerta = {
+        status: '',
+        mensagem: ''
+      }
+    }, 5000)
   }
 
   get nomeUsuario() { //mostrar nome de usuario
