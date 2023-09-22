@@ -10,7 +10,7 @@
         </div>
       </div>
 
-      <div v-if="mensagem_alerta" class="mt-3 mb-3 text-center" :class="mensagem_alerta.status">
+      <div v-if="mensagem_alerta" class="mt-3 text-center" :class="mensagem_alerta.status">
         {{ mensagem_alerta.mensagem }}
       </div>
 
@@ -71,6 +71,7 @@ export default class PesquisarMusicas extends Vue {
   musicas: Musicas[] = []
   audioUrl = ''
   pesquisar_musica = ''
+  usuario_id = localStorage.getItem('usuarioId')
 
   created() { //exibir musicas
     this.getMusicas()
@@ -139,16 +140,15 @@ export default class PesquisarMusicas extends Vue {
 
   }
 
-  public adicionarMusicaPlaylist(musica_id: number) {
-    const usuario_id = localStorage.getItem('usuarioId')
+  async adicionarMusicaPlaylist(musica_id: number) { //adicionar musica a playlist
 
-    if (!usuario_id) {
+    console.log('usuario_id:', this.usuario_id)
+    console.log('musica_id:', musica_id)
+
+    if (!this.usuario_id) {
       console.error('ID do usuário não encontrado em localStorage.')
       return
     }
-
-    console.log('usuario_id:', usuario_id)
-    console.log('musica_id:', musica_id)
 
     const config = {
       headers: {
@@ -156,39 +156,48 @@ export default class PesquisarMusicas extends Vue {
       },
     }
 
-    axios.post('http://localhost/Projetos/spotify_clone/src/backend/musicas_playlist.php', {
-      usuario_id: usuario_id,
-      musica_id: musica_id,
-    }, config)
-      .then((res) => {
-        console.log('Resposta do servidor:', res)
-        if (res.data.status) {
-          // A música foi adicionada com sucesso
+    try {
+      const response = await axios.post(
+        'http://localhost/Projetos/spotify_clone/src/backend/musicas_playlist.php',
 
-          this.mensagem_alerta = {
-            status: 'alert alert-success',
-            mensagem: 'Música adicionada à playlist com sucesso!'
-          }
+        {
+          usuario_id: this.usuario_id,
+          musica_id: musica_id,
+        },
+        
+        config
+      )
 
-        } else {
-          if (res.data.mensagem) {
-            console.error('Erro ao adicionar música à playlist:', res.data.mensagem)
-          } else {
-            console.error('Erro desconhecido ao adicionar música à playlist')
-          }
+      console.log('Resposta do servidor:', response)
+
+      if (response.data.status === 'sucesso') {
+
+        this.mensagem_alerta = {
+          status: 'alert alert-success',
+          mensagem: 'Música adicionada à playlist com sucesso!',
         }
-      })
-      .catch((err) => {
-        console.error('Erro na solicitação:', err)
-      })
 
-    setTimeout(() => {
-      this.mensagem_alerta = {
-        status: '',
-        mensagem: ''
+      } else {
+        this.mensagem_alerta = {
+          status: 'alert alert-danger',
+          mensagem: response.data.mensagem || 'Erro desconhecido ao adicionar música à playlist',
+        }
       }
-    }, 5000)
+
+      setTimeout(() => {
+        this.mensagem_alerta = { status: '', mensagem: '' }
+      }, 5000)
+
+    } catch (error) {
+
+      console.error('Erro na solicitação:', error)
+      this.mensagem_alerta = {
+        status: 'alert alert-danger',
+        mensagem: 'Erro na solicitação. Verifique o console para mais detalhes.',
+      }
+    }
   }
+
 
   get nomeUsuario() { //mostrar nome de usuario
     return localStorage.getItem('usuarioNome') || auth.usuarioNome || ''
