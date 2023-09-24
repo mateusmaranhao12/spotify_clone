@@ -3,7 +3,7 @@
 include "access_control.php";
 include "connection.php";
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') { //exibir músicas que usuário salvou
     
     $usuario_id = isset($_GET['usuario_id']) ? intval($_GET['usuario_id']) : 0;
 
@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
 } else {
+    
     http_response_code(400);
     $res = array('status' => 'erro', 'mensagem' => 'Requisição inválida');
     echo json_encode($res);
@@ -51,5 +52,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 $db_conn->close();
-
-?>

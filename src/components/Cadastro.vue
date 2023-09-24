@@ -178,4 +178,5 @@ export default class Cadastro extends Vue {
   
 <style lang="scss">
 @import '../scss/forms.scss';
+@import '../scss/alerts.scss';
 </style>

@@ -215,4 +215,5 @@ export default class PesquisarMusicas extends Vue {
 
 <style lang="scss">
 @import '../scss/pagina_usuario.scss';
+@import '../scss/alerts.scss';
 </style>
