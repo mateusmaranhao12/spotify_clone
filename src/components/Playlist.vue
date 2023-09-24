@@ -23,8 +23,8 @@
               <td>{{ musica.compositor }}</td>
               <td>
                 <div class="d-flex justify-content-center">
-                  <router-link :to="{ name: 'Player' }" class="btn btn-success"><i
-                      class="fa-solid fa-play"></i></router-link>
+                  <router-link :to="{ name: 'Player', params: { musica: JSON.stringify(musica) } }"
+                    class="btn btn-success"><i class="fa-solid fa-play"></i></router-link>
                 </div>
               </td>
               <td>

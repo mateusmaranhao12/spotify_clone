@@ -2,11 +2,11 @@
     <div class="container">
         <div class="row">
             <div class="col player mt-5 mb-5 d-flex justify-content-center">
-                <div class="card" style="width: 28rem;">
-                    <img src="../assets/imgs/m4.jpg" class="card-img-top" alt="...">
+                <div v-if="musica" class="card" style="width: 28rem;">
+                    <img :src="require(`@/assets/imgs/${musica.imagem}.jpg`)" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">This is What You Came For</h5>
-                        <p class="card-text">Calvin Harris, Rihanna</p>
+                        <h5 class="card-title">{{ musica.musica }}</h5>
+                        <p class="card-text">{{ musica.compositor }}</p>
 
                         <div class="row mt-3">
                             <div class="col-md-4">
@@ -36,6 +36,7 @@
   
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
+import { Musicas } from '@/utils/interfaces'
 
 @Options({
     components: {
@@ -43,10 +44,23 @@ import { Options, Vue } from 'vue-class-component'
     },
 })
 export default class Player extends Vue {
+    musica: Musicas | null = null
 
+    created() {
+        // Receba o parâmetro 'musica' da rota
+        const musicaParam = this.$route.params.musica
+
+        // Verifique se 'musicaParam' não está vazio e se é uma string
+        if (typeof musicaParam === 'string') {
+            // Converte a string JSON de volta para um objeto
+            this.musica = JSON.parse(musicaParam)
+            console.log('Dados da música:', this.musica)
+        }
+    }
 }
 </script>
   
 <style lang="scss">
 @import '../scss/pagina_usuario.scss';
+
 </style>
