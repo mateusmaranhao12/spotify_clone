@@ -164,7 +164,7 @@ export default class PesquisarMusicas extends Vue {
           usuario_id: this.usuario_id,
           musica_id: musica_id,
         },
-        
+
         config
       )
 
@@ -174,7 +174,14 @@ export default class PesquisarMusicas extends Vue {
 
         this.mensagem_alerta = {
           status: 'alert alert-success',
-          mensagem: 'Música adicionada à playlist com sucesso!',
+          mensagem: response.data.mensagem,
+        }
+
+      } else if (response.data.status === 'info') {
+
+        this.mensagem_alerta = {
+          status: 'alert alert-info',
+          mensagem: response.data.mensagem
         }
 
       } else {

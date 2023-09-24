@@ -25,10 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $res = array('status' => 'erro', 'mensagem' => 'Erro ao adicionar música à playlist: ' . $db_conn->error);
                 }
-                
+
             } else {
                 // A relação já existe - você pode retornar um erro aqui
-                $res = array('status' => 'erro', 'mensagem' => 'Música já está na playlist do usuário!');
+                $res = array('status' => 'info', 'mensagem' => 'Essa música já foi adicionada na playlist do usuário!');
             }
         } else {
             $res = array('status' => 'erro', 'mensagem' => 'Erro na consulta SQL: ' . $db_conn->error);
