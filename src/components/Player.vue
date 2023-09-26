@@ -10,7 +10,9 @@
 
                         <div class="row mt-3">
                             <div class="col-md-4">
-                                <i class="fa-solid fa-backward"></i>
+                                <button class="btn btn-success">
+                                    <i class="fa-solid fa-backward"></i>
+                                </button>
                             </div>
                             <div class="col-md-4">
                                 <button @click="tocarMusica()" class="btn btn-success">
@@ -19,7 +21,9 @@
                                 </button>
                             </div>
                             <div class="col-md-4">
-                                <i class="fa-solid fa-forward"></i>
+                                <button class="btn btn-success">
+                                    <i class="fa-solid fa-forward"></i>
+                                </button>
                             </div>
                         </div>
 
@@ -94,17 +98,20 @@ export default class Player extends Vue {
         }
     }
 
-    tocarMusica() { //controle de play e pause
+    tocarMusica() {
         if (!this.musica || !this.musica.som) {
             console.error('Dados da música ausentes ou inválidos.')
             return
         }
 
         if (!this.audio) {
-            this.audio = new Audio(`@/assets/music/${this.musica.som}.mp3`)
+            // Carregue a música dinamicamente com base no caminho da música
+            const musicaPath = `@/assets/music/${this.musica.som}.mp3`
+            this.audio = new Audio(musicaPath)
+
             this.audio.addEventListener('ended', () => {
-                this.tocandoMusica = false
-            })
+                this.tocandoMusica = false;
+            });
         }
 
         if (this.tocandoMusica) {
