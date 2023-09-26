@@ -13,7 +13,10 @@
                                 <i class="fa-solid fa-backward"></i>
                             </div>
                             <div class="col-md-4">
-                                <i class="fa-solid fa-pause"></i>
+                                <button @click="tocarMusica()" class="btn btn-success">
+                                    <i class="fa-solid"
+                                        :class="{ 'fa-play': !tocandoMusica, 'fa-pause': tocandoMusica }"></i>
+                                </button>
                             </div>
                             <div class="col-md-4">
                                 <i class="fa-solid fa-forward"></i>
@@ -35,8 +38,10 @@
 </template>
   
 <script lang="ts">
+
 import { Options, Vue } from 'vue-class-component'
 import { Musicas } from '@/utils/interfaces'
+import axios from 'axios'
 
 @Options({
     components: {
@@ -44,23 +49,75 @@ import { Musicas } from '@/utils/interfaces'
     },
 })
 export default class Player extends Vue {
+
     musica: Musicas | null = null
+    audio: HTMLAudioElement | null = null
+    tocandoMusica = false
 
     created() {
-        // Receba o parâmetro 'musica' da rota
-        const musicaParam = this.$route.params.musica
+        // Receba o parâmetro 'id' da rota e converta-o em um número
+        const id = Number(this.$route.params.id)
 
-        // Verifique se 'musicaParam' não está vazio e se é uma string
-        if (typeof musicaParam === 'string') {
-            // Converte a string JSON de volta para um objeto
-            this.musica = JSON.parse(musicaParam)
-            console.log('Dados da música:', this.musica)
+        // Verifique se id é um número válido
+        if (!isNaN(id)) {
+            // Chame o método para buscar detalhes da música com base no ID
+            this.buscarDetalhesDaMusica(id)
+        } else {
+            console.error('ID ausente na rota ou não é um número.')
         }
+    }
+
+    async buscarDetalhesDaMusica(id: number): Promise<Musicas | null> { //exibir detalhes da música
+        try {
+            const response = await axios.get(`http://localhost/projetos/spotify_clone/src/backend/musica_detalhes.php?id=${id}`)
+
+            if (response.status === 200) {
+                let musicaEncontrada = response.data
+
+                // Faça a conversão de tipos para as propriedades que devem ser números
+                musicaEncontrada.id = Number(musicaEncontrada.id)
+
+                if (musicaEncontrada) {
+                    this.musica = musicaEncontrada
+                    return musicaEncontrada // Retorne a música encontrada
+                } else {
+                    console.error('Música não encontrada.')
+                    this.musica = null
+                    return null // Retorne null quando a música não for encontrada
+                }
+            } else {
+                throw new Error('Erro ao buscar detalhes da música')
+            }
+        } catch (error) {
+            console.error('Erro ao buscar detalhes da música:', error)
+            throw error
+        }
+    }
+
+    tocarMusica() { //controle de play e pause
+        if (!this.musica || !this.musica.som) {
+            console.error('Dados da música ausentes ou inválidos.')
+            return
+        }
+
+        if (!this.audio) {
+            this.audio = new Audio(`@/assets/music/${this.musica.som}.mp3`)
+            this.audio.addEventListener('ended', () => {
+                this.tocandoMusica = false
+            })
+        }
+
+        if (this.tocandoMusica) {
+            this.audio.pause()
+        } else {
+            this.audio.play()
+        }
+
+        this.tocandoMusica = !this.tocandoMusica
     }
 }
 </script>
   
 <style lang="scss">
 @import '../scss/pagina_usuario.scss';
-
 </style>

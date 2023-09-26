@@ -53,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       
       {
-        path: 'player/:musica',
+        path: 'player/:id(\\d+)',
         name: 'Player',
         component: Player,
         props: true
