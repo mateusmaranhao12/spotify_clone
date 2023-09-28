@@ -1,5 +1,6 @@
 @import 'variaveis';
 
+//PesquisarMusicas.vue
 .pesquisar_musicas {
     padding: 40px;
     background-color: $black;
@@ -29,6 +30,7 @@
     }
 }
 
+//Playlist.vue
 .musicas {
     margin-top: 20px;
     text-align: $center;
@@ -65,7 +67,12 @@
 
 }
 
+//Player.vue
 .player {
+
+    .card-img-top {
+        border-radius: 50px;
+    }
 
     text-align: $center;
 
@@ -73,16 +80,8 @@
         color: $white;
     }
 
-    .card-title, .card-text, i {
+    .card-title, .card-text {
         color: $white
-    }
-
-    i {
-        cursor: pointer;
-
-        &:hover {
-            color: $green;
-        }
     }
 
     .progress {
@@ -92,5 +91,26 @@
 
     .progress-bar {
         background-color: $green;
+    }
+
+    .btn-play {
+        background-color: $green;
+        border-radius: 20px;
+        color: $black;
+
+        &:hover {
+            background-color: $black;
+            border: 1px solid $green;
+            color: $green;
+        }
+    }
+
+    .btn-back-next {
+        border-radius: 20px;
+        color: $white;
+
+        &:hover {
+            color: $green;
+        }
     }
 }

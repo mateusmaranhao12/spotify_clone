@@ -10,18 +10,18 @@
 
                         <div class="row mt-3">
                             <div class="col-md-4">
-                                <button class="btn btn-success">
+                                <button class="btn btn-back-next">
                                     <i class="fa-solid fa-backward"></i>
                                 </button>
                             </div>
                             <div class="col-md-4">
-                                <button @click="tocarMusica()" class="btn btn-success">
+                                <button @click="tocarMusica()" class="btn btn-play">
                                     <i class="fa-solid"
                                         :class="{ 'fa-play': !tocandoMusica, 'fa-pause': tocandoMusica }"></i>
                                 </button>
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-success">
+                                <button class="btn btn-back-next">
                                     <i class="fa-solid fa-forward"></i>
                                 </button>
                             </div>
@@ -35,6 +35,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <audio ref="audioElement" :src="getMusica()" preload="auto"></audio>
                 </div>
             </div>
         </div>
@@ -98,29 +100,29 @@ export default class Player extends Vue {
         }
     }
 
+    // Método para controlar a reprodução e a pausa da música
     tocarMusica() {
-        if (!this.musica || !this.musica.som) {
-            console.error('Dados da música ausentes ou inválidos.')
-            return
-        }
 
-        if (!this.audio) {
-            // Carregue a música dinamicamente com base no caminho da música
-            const musicaPath = `@/assets/music/${this.musica.som}.mp3`
-            this.audio = new Audio(musicaPath)
+        const audioElement = this.$refs.audioElement as HTMLAudioElement
 
-            this.audio.addEventListener('ended', () => {
-                this.tocandoMusica = false;
-            });
-        }
-
-        if (this.tocandoMusica) {
-            this.audio.pause()
+        if (audioElement.paused) {
+            audioElement.play()
+            this.tocandoMusica = true
         } else {
-            this.audio.play()
+            audioElement.pause()
+            this.tocandoMusica = false
         }
 
-        this.tocandoMusica = !this.tocandoMusica
+    }
+
+    // Método para obter o caminho da música com base nos detalhes da música
+    getMusica() {
+
+        if (this.musica && this.musica.som) {
+            return require(`@/assets/music/${this.musica.som}.mp3`)
+        }
+        return '' // Retorne um caminho vazio se os dados da música forem inválidos
+
     }
 }
 </script>
