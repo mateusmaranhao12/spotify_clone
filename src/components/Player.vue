@@ -30,9 +30,8 @@
                         <div class="d-flex align-items-center">
                             <small class="me-3 mt-3">{{ formatoTempo(tempoAtual) }}</small>
 
-                            <input type="range" class="form-range mt-3" min="0" :max="duracaoTotal"
-                                v-model="tempoAtual" @input="alterarTempo"
-                                style="width: 100%; height: 3px; cursor: pointer;" />
+                            <input type="range" class="form-range mt-3" min="0" :max="duracaoTotal" v-model="tempoAtual"
+                                @input="alterarTempo" style="width: 100%; height: 3px; cursor: pointer;" />
 
                             <small class="ms-3 mt-3">{{ formatoTempo(duracaoTotal) }}</small>
                         </div>
@@ -101,10 +100,11 @@ export default class Player extends Vue {
 
         const audioElement = this.$refs.audioElement as HTMLAudioElement
 
-        // Atualize o tempo atual e a duração total da música
-        this.tempoAtual = audioElement.currentTime
-        this.duracaoTotal = audioElement.duration
-
+        if (audioElement) {
+            // Atualize o tempo atual e a duração total da música
+            this.tempoAtual = audioElement.currentTime
+            this.duracaoTotal = audioElement.duration
+        }
     }
 
 
@@ -134,39 +134,6 @@ export default class Player extends Vue {
         }
     }
 
-    mounted() {
-        this.adicionarOuvinteTimeUpdate()
-    }
-
-    // Remover o ouvinte do evento timeupdate quando o componente está prestes a ser desmontado
-    beforeUnmount() {
-        // Limpar o intervalo ao destruir o componente para evitar vazamentos de memória
-        if (this.progressInterval) {
-            clearInterval(this.progressInterval)
-        }
-
-        // Remover o ouvinte do evento timeupdate
-        this.removerOuvinteTimeUpdate()
-    }
-
-    public adicionarOuvinteTimeUpdate() { // Método para adicionar o ouvinte do evento timeupdate
-
-        const audioElement = this.$refs.audioElement as HTMLAudioElement
-        if (audioElement) {
-            audioElement.addEventListener('timeupdate', this.atualizarTempo)
-        }
-
-    }
-
-    public removerOuvinteTimeUpdate() { // Método para remover o ouvinte do evento timeupdate
-
-        const audioElement = this.$refs.audioElement as HTMLAudioElement
-        if (audioElement) {
-            audioElement.removeEventListener('timeupdate', this.atualizarTempo)
-        }
-
-    }
-
     public tocarMusica() { // Método para controlar a reprodução e a pausa da música
 
         const audioElement = this.$refs.audioElement as HTMLAudioElement
@@ -174,23 +141,11 @@ export default class Player extends Vue {
         if (audioElement.paused) {
             audioElement.play()
             this.tocandoMusica = true
-            this.adicionarOuvinteTimeUpdate()
         } else {
             audioElement.pause()
             this.tocandoMusica = false
-            this.removerOuvinteTimeUpdate()
         }
 
-    }
-
-    public pausarMusica() { //pausar música quando usuário trocar de rota
-        const audioElement = this.$refs.audioElement as HTMLAudioElement
-
-        if (audioElement && !audioElement.paused) {
-            audioElement.pause()
-            this.tocandoMusica = false
-            this.removerOuvinteTimeUpdate()
-        }
     }
 
     async buscarDetalhesDaMusica(id: number): Promise<Musicas | null> { //exibir detalhes da música
