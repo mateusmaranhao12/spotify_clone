@@ -10,7 +10,7 @@
 
                         <div class="row mt-3">
                             <div class="col-md-4">
-                                <button class="btn btn-back-next">
+                                <button @click="prev()" class="btn btn-back-next">
                                     <i class="fa-solid fa-backward"></i>
                                 </button>
                             </div>
@@ -21,7 +21,7 @@
                                 </button>
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-back-next">
+                                <button @click="next()" class="btn btn-back-next">
                                     <i class="fa-solid fa-forward"></i>
                                 </button>
                             </div>
@@ -95,7 +95,6 @@ export default class Player extends Vue {
 
     }
 
-
     public atualizarTempo() { //atualizar tempo
 
         const audioElement = this.$refs.audioElement as HTMLAudioElement
@@ -106,7 +105,6 @@ export default class Player extends Vue {
             this.duracaoTotal = audioElement.duration
         }
     }
-
 
     public formatoTempo(tempo: number): string { //método para formatação do tempo minutos:segundos
 
@@ -175,6 +173,13 @@ export default class Player extends Vue {
         }
     }
 
+    prev() { //música anterior
+        console.log('música anterior')
+    }
+
+    next() { //próxima música
+        console.log('próxima música')
+    }
 
     getMusica() { // Método para obter o caminho da música com base nos detalhes da música
 
