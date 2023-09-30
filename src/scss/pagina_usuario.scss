@@ -71,7 +71,7 @@
 .player {
 
     .card-img-top {
-        border-radius: 50px;
+        border-radius: 20px;
     }
 
     text-align: $center;
@@ -80,7 +80,8 @@
         color: $white;
     }
 
-    .card-title, .card-text {
+    .card-title,
+    .card-text {
         color: $white
     }
 
@@ -108,9 +109,11 @@
     .btn-back-next {
         border-radius: 20px;
         color: $white;
+        border: none;
 
         &:hover {
             color: $green;
         }
     }
+
 }

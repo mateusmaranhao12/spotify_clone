@@ -28,15 +28,18 @@
                         </div>
 
                         <div class="d-flex align-items-center">
-                            <small class="me-2 mt-3">0:58</small>
-                            <div class="progress mt-3 flex-grow-1" role="progressbar" aria-valuenow="25" aria-valuemin="0"
-                                aria-valuemax="100">
-                                <div class="progress-bar" style="width: 25%"></div>
-                            </div>
+                            <small class="me-3 mt-3">{{ formatoTempo(tempoAtual) }}</small>
+
+                            <input type="range" class="form-range mt-3" min="0" :max="duracaoTotal"
+                                v-model="tempoAtual" @input="alterarTempo"
+                                style="width: 100%; height: 3px; cursor: pointer;" />
+
+                            <small class="ms-3 mt-3">{{ formatoTempo(duracaoTotal) }}</small>
                         </div>
                     </div>
 
-                    <audio ref="audioElement" :src="getMusica()" preload="auto"></audio>
+                    <audio ref="audioElement" :src="getMusica()" preload="auto" autoplay
+                        @timeupdate="atualizarTempo"></audio>
                 </div>
             </div>
         </div>
@@ -56,11 +59,24 @@ import axios from 'axios'
 })
 export default class Player extends Vue {
 
+    //configurações de áudio
     musica: Musicas | null = null
     audio: HTMLAudioElement | null = null
     tocandoMusica = false
 
+    //configurações de tempo
+
+    tempoAtual = 0
+    duracaoTotal = 0
+
+    //progressbar
+    progresso = 0
+
+    // Configurar um intervalo para atualizar regularmente o progresso
+    progressInterval: number | null = null
+
     created() {
+
         // Receba o parâmetro 'id' da rota e converta-o em um número
         const id = Number(this.$route.params.id)
 
@@ -70,6 +86,110 @@ export default class Player extends Vue {
             this.buscarDetalhesDaMusica(id)
         } else {
             console.error('ID ausente na rota ou não é um número.')
+        }
+
+        //começar tocando a música
+        this.tocandoMusica = true
+
+        // Iniciar o intervalo para atualizar o progresso
+        this.progressInterval = setInterval(this.atualizarProgresso, 1000)
+
+    }
+
+
+    public atualizarTempo() { //atualizar tempo
+
+        const audioElement = this.$refs.audioElement as HTMLAudioElement
+
+        // Atualize o tempo atual e a duração total da música
+        this.tempoAtual = audioElement.currentTime
+        this.duracaoTotal = audioElement.duration
+
+    }
+
+
+    public formatoTempo(tempo: number): string { //método para formatação do tempo minutos:segundos
+
+        const minutos = Math.floor(tempo / 60)
+        const segundos = Math.floor(tempo % 60)
+        return `${minutos}:${segundos.toString().padStart(2, '0')}`
+
+    }
+
+    public atualizarProgresso() { // Método para atualizar a barra de progresso
+        const audioElement = this.$refs.audioElement as HTMLAudioElement
+
+        if (audioElement && !isNaN(audioElement.duration)) {
+            this.progresso = (audioElement.currentTime / audioElement.duration) * 100
+        } else {
+            this.progresso = 0
+        }
+    }
+
+    public alterarTempo() { //alterar tempo da barra
+        const audioElement = this.$refs.audioElement as HTMLAudioElement
+
+        if (audioElement) {
+            audioElement.currentTime = this.tempoAtual
+        }
+    }
+
+    mounted() {
+        this.adicionarOuvinteTimeUpdate()
+    }
+
+    // Remover o ouvinte do evento timeupdate quando o componente está prestes a ser desmontado
+    beforeUnmount() {
+        // Limpar o intervalo ao destruir o componente para evitar vazamentos de memória
+        if (this.progressInterval) {
+            clearInterval(this.progressInterval)
+        }
+
+        // Remover o ouvinte do evento timeupdate
+        this.removerOuvinteTimeUpdate()
+    }
+
+    public adicionarOuvinteTimeUpdate() { // Método para adicionar o ouvinte do evento timeupdate
+
+        const audioElement = this.$refs.audioElement as HTMLAudioElement
+        if (audioElement) {
+            audioElement.addEventListener('timeupdate', this.atualizarTempo)
+        }
+
+    }
+
+    public removerOuvinteTimeUpdate() { // Método para remover o ouvinte do evento timeupdate
+
+        const audioElement = this.$refs.audioElement as HTMLAudioElement
+        if (audioElement) {
+            audioElement.removeEventListener('timeupdate', this.atualizarTempo)
+        }
+
+    }
+
+    public tocarMusica() { // Método para controlar a reprodução e a pausa da música
+
+        const audioElement = this.$refs.audioElement as HTMLAudioElement
+
+        if (audioElement.paused) {
+            audioElement.play()
+            this.tocandoMusica = true
+            this.adicionarOuvinteTimeUpdate()
+        } else {
+            audioElement.pause()
+            this.tocandoMusica = false
+            this.removerOuvinteTimeUpdate()
+        }
+
+    }
+
+    public pausarMusica() { //pausar música quando usuário trocar de rota
+        const audioElement = this.$refs.audioElement as HTMLAudioElement
+
+        if (audioElement && !audioElement.paused) {
+            audioElement.pause()
+            this.tocandoMusica = false
+            this.removerOuvinteTimeUpdate()
         }
     }
 
@@ -100,23 +220,8 @@ export default class Player extends Vue {
         }
     }
 
-    // Método para controlar a reprodução e a pausa da música
-    tocarMusica() {
 
-        const audioElement = this.$refs.audioElement as HTMLAudioElement
-
-        if (audioElement.paused) {
-            audioElement.play()
-            this.tocandoMusica = true
-        } else {
-            audioElement.pause()
-            this.tocandoMusica = false
-        }
-
-    }
-
-    // Método para obter o caminho da música com base nos detalhes da música
-    getMusica() {
+    getMusica() { // Método para obter o caminho da música com base nos detalhes da música
 
         if (this.musica && this.musica.som) {
             return require(`@/assets/music/${this.musica.som}.mp3`)
