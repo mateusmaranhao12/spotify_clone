@@ -64,7 +64,6 @@ export default class Player extends Vue {
     tocandoMusica = false
 
     //configurações de tempo
-
     tempoAtual = 0
     duracaoTotal = 0
 
@@ -74,7 +73,24 @@ export default class Player extends Vue {
     // Configurar um intervalo para atualizar regularmente o progresso
     progressInterval: number | null = null
 
+    //ID do usuario autenticado
+    usuario_id = localStorage.getItem('usuarioId')
+
+    // Playlist
+    playlist: Musicas[] = [] //acessar as músicas
+    musicaAtualIndex = 0 // Inicializar com o índice da primeira música
+
     created() {
+
+        //musica termina de tocar
+        this.audio = this.$refs.audioElement as HTMLAudioElement
+
+        if (this.audio) {
+            this.audio.addEventListener('ended', () => {
+                this.next()
+                console.log('finalizou, proxima musica')
+            })
+        }
 
         // Receba o parâmetro 'id' da rota e converta-o em um número
         const id = Number(this.$route.params.id)
@@ -83,6 +99,10 @@ export default class Player extends Vue {
         if (!isNaN(id)) {
             // Chame o método para buscar detalhes da música com base no ID
             this.buscarDetalhesDaMusica(id)
+
+            // Carregar a playlist do usuário
+            this.carregarPlaylistUsuario()
+
         } else {
             console.error('ID ausente na rota ou não é um número.')
         }
@@ -93,6 +113,29 @@ export default class Player extends Vue {
         // Iniciar o intervalo para atualizar o progresso
         this.progressInterval = setInterval(this.atualizarProgresso, 1000)
 
+    }
+
+    async carregarPlaylistUsuario() { //carregar playlist do usuário
+        try {
+            console.log('ID do usuário:', this.usuario_id)
+            const res = await axios.get(
+                'http://localhost/projetos/spotify_clone/src/backend/musicas_playlist_usuario.php',
+                {
+                    params: {
+                        usuario_id: this.usuario_id,
+                    },
+                }
+            )
+
+            if (res.status === 200) {
+                this.playlist = res.data // Assumindo que a resposta contém as músicas da playlist
+                console.log('Playlist carregada:', this.playlist)
+            } else {
+                console.error('Erro ao carregar a playlist do usuário.')
+            }
+        } catch (error) {
+            console.error('Erro ao carregar a playlist do usuário:', error)
+        }
     }
 
     public atualizarTempo() { //atualizar tempo
@@ -173,12 +216,40 @@ export default class Player extends Vue {
         }
     }
 
-    prev() { //música anterior
-        console.log('música anterior')
+    public prev() {
+        if (this.playlist.length === 0) return
+
+        if (this.musicaAtualIndex > 0) {
+            this.musicaAtualIndex--
+        } else {
+            // Você pode optar por reiniciar a lista ou parar a reprodução no início.
+            // Aqui, estamos reiniciando a lista.
+            this.musicaAtualIndex = this.playlist.length - 1
+        }
+
+        this.playMusicaAtual()
     }
 
-    next() { //próxima música
-        console.log('próxima música')
+    public next() {
+        if (this.playlist.length === 0) return
+
+        if (this.musicaAtualIndex < this.playlist.length - 1) {
+            this.musicaAtualIndex++
+        } else {
+            // Você pode optar por reiniciar a lista ou parar a reprodução no final.
+            // Aqui, estamos reiniciando a lista.
+            this.musicaAtualIndex = 0
+        }
+
+        this.playMusicaAtual()
+    }
+
+    playMusicaAtual() {
+        if (this.playlist.length === 0) return
+
+        const novaMusica = this.playlist[this.musicaAtualIndex]
+        this.buscarDetalhesDaMusica(novaMusica.id)
+        this.tocandoMusica = true
     }
 
     getMusica() { // Método para obter o caminho da música com base nos detalhes da música
