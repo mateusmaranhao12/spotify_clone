@@ -28,12 +28,12 @@
                         </div>
 
                         <div class="d-flex align-items-center">
-                            <small class="me-3 mt-3">{{ formatoTempo(tempoAtual) }}</small>
+                            <small class="me-3 mt-3" v-if="duracaoTotal">{{ formatoTempo(tempoAtual) }}</small>
 
                             <input type="range" class="form-range mt-3" min="0" :max="duracaoTotal" v-model="tempoAtual"
                                 @input="alterarTempo" style="width: 100%; height: 3px; cursor: pointer;" />
 
-                            <small class="ms-3 mt-3">{{ formatoTempo(duracaoTotal) }}</small>
+                            <small class="ms-3 mt-3" v-if="duracaoTotal">{{ formatoTempo(duracaoTotal) }}</small>
                         </div>
                     </div>
 
